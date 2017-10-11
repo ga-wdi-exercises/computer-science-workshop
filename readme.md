@@ -121,12 +121,12 @@ function quickSort (a) {
 ```
 Quick sort is a more efficient algorithm for sorting an array. But why is that?
 
-> Aside: writing sorting algorithms is important for understanding the "behind the scenes" of a programming language, but each one we have used in this class has a `.sort()` method built in. Ruby's uses a [merge sort](https://en.wikipedia.org/wiki/Merge_sort), Python uses a [tim sort](https://en.wikipedia.org/wiki/Timsort), and JavaScript uses [quick sort](https://stackoverflow.com/questions/234683/javascript-array-sort-implementation) -- but this depends on the browser. In practice, you should use these since they are highly optimised, though many companies like you to know some sorting algorithms (usually have two on hand). 
+> Aside: writing sorting algorithms is important for understanding the "behind the scenes" of a programming language, but each one we have used in this class has a `.sort()` method built in. Ruby's uses a [merge sort](https://en.wikipedia.org/wiki/Merge_sort), Python uses a [tim sort](https://en.wikipedia.org/wiki/Timsort), and JavaScript uses [quick sort](https://stackoverflow.com/questions/234683/javascript-array-sort-implementation) -- but this depends on the browser. In practice, you should use these since they are highly optimized, though many companies like you to know some sorting algorithms (usually have two on hand). 
 
 
 ## Running Time and Big-O Analysis
 
-We can look at a program and say -- "Oh that took two seconds to run". But that two seconds is dependant on a lot of things. That two seconds is for a very specific input. If we make the input 100 items instead of 10, what happens? Also, that two seconds is on a certain computer with a certain version of your programming language. Instead, we should generalize the algorithm's complexity.
+We can look at a program and say -- "Oh that took two seconds to run". But that two seconds is dependent on a lot of things. That two seconds is for a very specific input. If we make the input 100 items instead of 10, what happens? Also, that two seconds is on a certain computer with a certain version of your programming language. Instead, we should generalize the algorithm's complexity.
 
 We do so using a notation that mathematicians and computer scientists use, called Big-O notation.
 
