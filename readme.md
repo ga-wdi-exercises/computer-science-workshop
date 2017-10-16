@@ -217,7 +217,7 @@ The following table shows how algorithms with different complexities scale when 
 **How would we plot these families on the earlier graph?**
 
 Let's look at this demo in javascript...
-- Code: [JS](script.js), [HTML](index.html)
+- Code: [JS](https://git.generalassemb.ly/ga-wdi-lessons/cs-algorithms/blob/master/js-example/script.js), [HTML](https://git.generalassemb.ly/ga-wdi-lessons/cs-algorithms/blob/master/js-example/index.html)
 - [Deployed](http://aboard-thought.surge.sh)
 
 ### You Do: Study Big-O Families
@@ -227,7 +227,7 @@ Let's look at this demo in javascript...
 
 ## Sorting Algorithms
 
-One of the most common subsets of algorithms are sorting algorithms. A lot of the time, we will have a collection of items that we want to order in some way for our analyses or for display purposes. 
+One of the most important subsets of algorithms is sorting algorithms. A lot of the time, we will have a collection of items that we want to order in some way for our analyses or for display purposes. 
 ![](https://cdn-images-1.medium.com/max/600/1*i0fopl3fml48X4aAxpqM4A.jpeg)
 
 There are **tons** of sorting algorithms with various pros and cons to them -- some are more efficient with some types of inputs and less with others. Again, having an efficient sorting algorithm isn't super important with a collection of ten items, but when there are a million or a billion efficiency becomes very important!
@@ -262,8 +262,7 @@ function bubbleSort (a) {
 
 The bubble sort algorithm has an O(n^2) complexity. It works really well if an array is close to sorted -- in that case the algorithm could be closer to O (n log n), but in the case that an array is not close to sorted, it will be a lot less efficient.
 
-
-## Quicksort
+### Quicksort
 
 With the person next to you, describe what the below function is doing. [Hint](https://www.toptal.com/developers/sorting-algorithms/quick-sort).
 
@@ -297,23 +296,23 @@ In groups of two, research the following sorting algorithms:
 
 You will be presenting your findings to the rest of the class! Make sure you include the benefits, drawbacks, complexity, and a code sample of your algorithm. If you want to send any materials for your presentation to me feel free to do so!
 
-> Aside: writing sorting algorithms is important for understanding the "behind the scenes" of a programming language, but each language we have used in this class has a `.sort()` method built in. Ruby's uses a [merge sort](https://en.wikipedia.org/wiki/Merge_sort), Python uses a [tim sort](https://en.wikipedia.org/wiki/Timsort), and JavaScript uses [quick sort](https://stackoverflow.com/questions/234683/javascript-array-sort-implementation) -- but this depends on the browser. In practice, you should use these since they are highly optimized, though many companies like you to know some sorting algorithms (usually have two on hand). 
+> Aside: writing sorting algorithms is important for understanding the "behind the scenes" of a programming language, but each language we have used in this class has a `.sort()` method built in. Ruby's uses a [merge sort](https://en.wikipedia.org/wiki/Merge_sort), Python uses a [tim sort](https://en.wikipedia.org/wiki/Timsort), and JavaScript uses [quick sort](https://stackoverflow.com/questions/234683/javascript-array-sort-implementation) (depending on the browser). In practice, you should ususally use these since they are highly optimized. Many companies like you to know some sorting algorithms (usually have two on hand). 
 
+# Data Structures
 
-### Pointers
+Throughout this class, we've used some of the builtin data structures that our programming languages give us. Let's review what a data structure is: data structures define how a collection of data should be organized. We have used arrays, objects, hashes, and ranges in our code.  There are reasons why we choose one over the other -- if we want ordered data we use an array, if we want key value pairs we use an object. There are also other data structures out there. Some are built in to the programming language, some are not. 
 
+These data structures are programming language agnostic -- they can be implemented in any language. Therefore, they fall into the category of "abstract data types" -- or theoretical data types described by their values and actions. For example, an integer is a whole number which can be added, subtracted, multiplied etc. These can be implemented across programming languages -- or even outside of programming. Data structures fall into this same category!
 
-## Big O Notation
-
-## Data Structures
+Similar to the sorting algorithms from before, we use different data structures for different reasons. Usually, they have some operation optimized -- like sorting, searching, adding or removing items, or iterating through them. Let's first start looking more in depth at the data structures we've seen in class and then look at some new ones!
 
 ### Arrays
-Arrays are the most basic data structure. For an array, the user must declare its size upfront (though most modern languages handle this behind the scenes) since arrays are stored in adjacent blocks of memory. If you were able to change its size then there would be no guarantee that there would be more memory to use in that block of memory. 
-* Arrays hold values referenced by index, so accessing items is very quick. 
-* Strings are arrays of characters, tuples are immutable arrays, and Python lists are dynamically resized arrays.
-* Each cell in an array uses the same number of bytes, so usually the array will actually just store a pointer to the actual object rather than storing it within the contiguous block of memory.
-* ```address = start + (cellsize * index)```
 
+Arrays are ordered data structures that allow us to access pieces of data at a given index.
+
+Traditionally, arrays have a set size, so you can't add or remove data from them. This makes them really efficient because array items can be stored together in a block of memory on your computer. The indexes of the items are then calculated based on the address in memory that the item is located at.
+
+ The high level programming languages that we have seen in this class abstract away the memory allocation dynamic in arrays, so we can easily add and remove items from them. Most programming languages implement this process by allocating more memory than needed for an array at initialization and then resizing dynamically at certain indexes. In a lot of cases, arrays wil store a pointer to the item rather than the item itself in memory. This makes them less efficient from a computational perspective, but makes them much more programmer friendly!
 
 |Operation|Complexity|
 |---------|----------|
@@ -322,21 +321,26 @@ Arrays are the most basic data structure. For an array, the user must declare it
 |Insert   |O(n)      |
 |Delete   |O(n)      | 
 
+* Accessing can be done using the formula start + (cellsize * index)
+* Searching is done by iterating through the array and seeing if the value equals the item you are searching for.
+* Insertion is done by recreating the array, which means that each item must be recreated.
+* Deletion is done by recreating the array, which means that each item must be recreated.
 
-### Maps/Dictionaries/Hashes/Objects
-Hash tables are often very efficient data structures. They store data using a computed index. The function that computes the index is called a hashing function. Each item in the hash table has a key and value, rather than storing data by index. The biggest difficulty with hashing is collisions, which happen when the hashing function computes the same index for multiple values. There are many ways around this, including creating a new key or using arrays to store the values at that index.
 
-* Dictionaries in Python are an implementation of a hash table.
+### Hash Tables
+
+Hash tables are another name for objects, hashes, maps, associative arrays, and dictionaries depending on the language. They store data in key value pairs. 
+
+Hash tables allow us to easily insert, delete, search, and access data. 
 
 |Operation|Complexity|
 |---------|----------|
-|Access   |O(1)->O(n)|
-|Search   |O(1)->O(n)|
-|Insert   |O(1)->O(n)|
-|Delete   |O(1)->O(n)| 
+|Access   |O(1) -> O(n)|
+|Search   |O(1) -> O(n)|
+|Insert   |O(1) -> O(n)|
+|Delete   |O(1) -> O(n)| 
 
-The complexities of each of the above operations depend on the hashing function used.
-
+The implementation details of hash tables are outside the scope of this class, but the efficiency of each of their operations is usually very close to O(1). [Here](https://github.com/aspittel/coding-cheat-sheets/blob/master/data_structures/hash_tables.md) and [here](https://github.com/SF-WDI-LABS/hash-map-lab) have more details on how hash tables are implemented if you are interested.
 
 ### Linked Lists
 Linked lists are graph data structures that consist of nodes and pointers. There can be doubly or singly linked lists. Singly linked lists have nodes that store the value of the node and a pointer to the next node. Doubly linked lists additionally store a pointer to the previous node as well.
