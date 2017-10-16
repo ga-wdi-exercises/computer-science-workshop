@@ -198,6 +198,8 @@ Recursion is when a function calls itself. A lot of the times, this will make wr
 
 Some interviewers prefer recursive solutions whereas others are very against them -- don't worry too much about it just know the pros and cons of both approaches. 
 
+> Easter Egg: search recursion on Google!
+
 ### Big-O Summary
 ![](https://i.stack.imgur.com/jIGhf.png)
 
@@ -312,7 +314,7 @@ Arrays are ordered data structures that allow us to access pieces of data at a g
 
 Traditionally, arrays have a set size, so you can't add or remove data from them. This makes them really efficient because array items can be stored together in a block of memory on your computer. The indexes of the items are then calculated based on the address in memory that the item is located at.
 
- The high level programming languages that we have seen in this class abstract away the memory allocation dynamic in arrays, so we can easily add and remove items from them. Most programming languages implement this process by allocating more memory than needed for an array at initialization and then resizing dynamically at certain indexes. In a lot of cases, arrays wil store a pointer to the item rather than the item itself in memory. This makes them less efficient from a computational perspective, but makes them much more programmer friendly!
+The high level programming languages that we have seen in this class abstract away the memory allocation dynamic in arrays, so we can easily add and remove items from them. Most programming languages implement this process by allocating more memory than needed for an array at initialization and then resizing dynamically at certain indexes. In a lot of cases, arrays wil store a pointer to the item rather than the item itself in memory. This makes them less efficient from a computational perspective, but makes them much more programmer friendly!
 
 |Operation|Complexity|
 |---------|----------|
@@ -342,41 +344,170 @@ Hash tables allow us to easily insert, delete, search, and access data.
 
 The implementation details of hash tables are outside the scope of this class, but the efficiency of each of their operations is usually very close to O(1). [Here](https://github.com/aspittel/coding-cheat-sheets/blob/master/data_structures/hash_tables.md) and [here](https://github.com/SF-WDI-LABS/hash-map-lab) have more details on how hash tables are implemented if you are interested.
 
-### Linked Lists
-Linked lists are graph data structures that consist of nodes and pointers. There can be doubly or singly linked lists. Singly linked lists have nodes that store the value of the node and a pointer to the next node. Doubly linked lists additionally store a pointer to the previous node as well.
 
-* The first item is called the head and the rest of the list is called the tail.
-* Insertion and deletion is relatively simple since the nodes do not need to be stored adjacently in memory.
-* Indexing and accessing elements is pretty slow since you must traverse the list to do so.
+### Linked Lists
+
+Linked lists are linear collections of data that consist of nodes with data and pointers. Singly linked lists have nodes that store the value of the node and a pointer to the next node. Doubly linked lists additionally store a pointer to the previous node.
+
+Linked lists do not need to be stored contiguously in memory like an array, so insertion and deletion is relatively simple. They do not natively support accessing one data node or indexing through operations. These operations are normally performed just by looping through the nodes. They use more memory than arrays since they store pointers to the next link(s).
+
+Singly Linked List
+![](https://camo.githubusercontent.com/607cc2bd3479d1a64b384013f2fddcc61518ee0b/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f7468756d622f362f36642f53696e676c792d6c696e6b65642d6c6973742e7376672f34303870782d53696e676c792d6c696e6b65642d6c6973742e7376672e706e67)
+
+Doubly Linked List
+![](https://camo.githubusercontent.com/e721d88260c3b8f1971cf3fcc8a291e7936fa731/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f7468756d622f352f35652f446f75626c792d6c696e6b65642d6c6973742e7376672f36313070782d446f75626c792d6c696e6b65642d6c6973742e7376672e706e67)
+
 
 |Operation|Complexity|
 |---------|----------|
 |Access   |O(n)      |
 |Search   |O(n)      |
 |Insert   |O(1)      |
-|Delete   |O(1)      | 
+|Delete   |O(1)      |
 
-### Queues / Stacks
-A stack is a data structure that operates in a last in first out nature. Newer items are at the top of the stack and will be accessed first whereas older items are near the bottom and will be accessed last. A back button is a good example of an implementation of a stack. Common methods include:
+Items in linked lists are unindexed, so you must traverse the list to find an element. In order to insert or delete, you only have to change the "next" property of one cell.
+
+```javascript
+class Node {
+	constructor (data, next = null) {
+		this.data = data
+		this.next = next
+	}
+}
+
+
+class SinglyLinkedList {
+	constructor () {
+		this.head = null
+		this.length = 0
+	}
+
+	insert (item) {
+		this.head = new Node(item)
+		this.length ++
+	}
+
+	search (item) {
+		let idx = 0
+		let node = self.head
+
+		while (node) {
+			if (node.data == data) return idx
+			node = node.next
+			idx += 1
+		}
+
+		return -1
+	}
+}
+```
+
+#### You Do: Implement Delete and Access
+* Add methods to the `SinglyLinkedList` that allow you to delete a node and that allow you to access an item at a certain index.
+
+```javascript
+class Node {
+	constructor (data, next = null, prev = null) {
+		this.data = data
+		this.next = next
+		this.prev = prev
+	}
+}
+
+
+class DoublyLinkedList {
+	constructor () {
+		this.head = null
+		this.tail = null
+		this.length = 0
+	}
+
+	insert (item) {
+		new_node = new Node(item, null, self.head)
+		
+		if (!self.head) {
+			self.head = new_node
+		} else {
+			self.tail.next = new_node
+			new_node.prev = self.tail
+		}
+
+		self.tail = new_node
+		this.length ++
+	}
+
+	search (item) {
+		let idx = 0
+		let node = self.head
+
+		while (node) {
+			if (node.data == data) return idx
+			node = node.next
+			idx += 1
+		}
+
+		return -1
+	}
+}
+```
+
+#### You Do: Implement Delete and Access
+* Add methods to the `DoublyLinkedList` that allow you to traverse the doubly linked list backwards.
+
+
+### Stacks
+
+Stacks as a data structure are a lot like stacks as a physical structure. Think of stacks of dishes or books. Stacks operate in a last in first out nature. Newer items are at the top of the stack and will be accessed first whereas older items are near the bottom and will be accessed last. Back buttons, undo buttons, and the function call stack are common uses of stacks. Common methods include:
 * Push - add an item to the top of the stack.
 * Pop - remove the top item from the stack.
 * Peek - check to see the top item of the stack.
 
-```python 
-class Stack:
-	
-	def __init__(self):
-		self.data = []
+![](https://camo.githubusercontent.com/6847160e586699a3fbd38eba5fef228440975c77/687474703a2f2f6c65676163792e6561726c68616d2e6564752f2537456c746e677579656e31342f63732532307765622f706963732f737461636b2e706e67)
 
-	def push(self, item):
-		self.data.append(item)
+Stacks are usually implemented either using a linked list or an array.
 
-	def pop(self):
-		return self.data.pop()
+#### Linked List Implementation
+```javascript
+class Node {
+	constructor (data, next = null) {
+		this.data = data
+		this.next = next
+	}
+}
 
-	def peek(self):
-		return self.data[-1]
+class Stack {
+	constructor () {
+		this.head = null
+	}
+
+	push (data) {
+		this.head = new Node(data, this.head)
+	}
+
+	pop () {
+		let data = this.head.data
+		this.head = this.head.next
+		return data
+	}
+
+	peek () {
+		return this.head.data
+	}
+}
 ```
+
+|Operation|Complexity|
+|---------|----------|
+|Access   |O(1)      |
+|Insert   |O(1)      |
+|Delete   |O(1)      | 
+
+Stacks are very efficient, but they are also limited in what we can do with them.
+
+#### You Do: Implement a Stack Using an Array
+Create a stack using an array. Make sure you have the methods push, pop, and peek!
+
+### Queues
 
 A queue is a data structure that operates on a first in first out basis, similar to a line for a movie. These are often used for breadth-first searching where nodes are stored in order for processing. These are usually implemented using either a singly linked list or an array. Common methods include:
 
@@ -384,24 +515,58 @@ A queue is a data structure that operates on a first in first out basis, similar
 * Dequeue: remove item from the queue
 * Peek: return the next item in the queue
 
-```python 
-class Queue:
+Software queues are used in a lot of cases like real life queues -- they give service to the task that asked for it first. A printer, for example, usually prints the first job given to it and then queues up the others until it is their turn. 
 
-	def __init__(self):
-		self.data = []
+![](https://camo.githubusercontent.com/36f5620ed351f717bdce36d783f9261472f0634a/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f7468756d622f352f35322f446174615f51756575652e7376672f3230303070782d446174615f51756575652e7376672e706e67)
 
-	def enqueue(self, item):
-		self.data.insert(0, item)
+```javascript 
+class Node {
+	constructor (data, next = null, prev = null) {
+		this.data = data
+		this.next = next
+		this.prev = prev
+	}
+}
 
-	def dequeue(self):
-		return self.data.pop()
+class Queue {
+	constructor () {
+		this.head = null
+		this.tail = null
+	}
 
-	def peek(self):
-		return self.data[-1]
+	enqueue (data) {
+		let newNode = new Node (data, null, this.head)
+
+		if (!this.head) {
+			this.head = newNode
+		} else {
+			this.tail.next = newNode
+			newNode.prev = self.tail
+		}
+
+		this.tail = newNode
+	}
+
+	dequeue (data) {
+		let data = this.head.data
+		this.head = this.head.next
+		return data
+	}
+
+	peek () {
+		return this.head.data
+	}
+}
 ```
 
+|Operation|Complexity|
+|---------|----------|
+|Access   |O(1)      |
+|Insert   |O(1)      |
+|Delete   |O(1)      | 
 
-### Sets
+#### You Do: Implement a Queue Using an Array
+Create a queue using an array. Make sure you have the methods enqueue, dequeue, and peek!
 
 ### Graphs
 Graphs are non-linear data structures that do not necessarily follow a numerical order. Graphs are similar to trees but with essentially no rules. A tree is a graph, but most graphs are not trees. 
@@ -472,24 +637,6 @@ Binary search trees are a special form of where each left child of a node has a 
 
 ### Searching
 
-### Recursion
-https://i.redd.it/f4pua0fm4ysy.gif
-
-#### Divide and Conquer
-Divide and conquer is "an algorithm design paradigm that is based on multi-branch recursion. It takes a larger problem and breaks it into 2+ sub-problems" ([Wikipedia](https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm)). [Merge soring](https://github.com/aspittel/coding_cheat_sheets/blob/master/sorting/mergesort.md) and some Fibonacci algorithms are implementations of the divide and conquer algorithm. These are especially useful on multi-processor systems.
-
-##### Code Example
-```ruby
-def multiply_range n, m
-	if n == m
-		return m
-	elsif m < n
-		return 1
-	else
-		return multiply_range(n, (m+n)/2) * multiply_range((n+m)/2 + 1, m)
-    end
-end
-```
 
 Additional resources: 
 
