@@ -54,22 +54,189 @@ Take 10 minutes and read [this](https://www.economist.com/blogs/economist-explai
 
 from [here](https://www.economist.com/blogs/economist-explains/2017/08/economist-explains-24).
 
+In other words...
+
+> An algorithm is just fancy term for a set of instructions of what a program should do, and how it should do it. In other words: it’s nothing more than a manual for your code.
+[Vaidehi Joshi](https://medium.com/basecs/sorting-out-the-basics-behind-sorting-algorithms-b0a032873add)
 
 ### What makes a good algorithm?
 
-When we work with small inputs, like we have for the most part in this class, using an efficient algorithm to solve a problem is not crucial. Instead, it is more important to have clean code, good interfaces, and bug-less applications. However, once we are working with huge inputs our code will get a lot slower. At that point, building efficient algorithms becomes really important. 
+When we work with relatively small inputs, like we have for the most part in this class, using an efficient algorithm to solve a problem is not crucial. Instead, it is more important to have clean code, good interfaces, and bug-less applications. However, once we are working with huge inputs our code will get a lot slower. At that point, building efficient algorithms becomes really important.
 
-When we write code, one of our main goals is to make that code execute fast. If our code is slow, our sites will load slowly and users may leave. We also want to use as little memory as possible when we execute our code so that it is less expensive to host our sites.
+When we write code, one of our main goals is to make that code execute quickly. If our code is inefficient, our sites will load slowly and users may leave. We also want to use as little memory as possible when we execute our code so that it is less expensive to host our sites.
+
+## Run Time and Big-O Analysis
+
+We can look at a program and say -- "Oh that took two seconds to run". But that two seconds is dependent on a lot of things. That two seconds is for a very specific input. If we make the input 100 items instead of 10, what happens? Also, that two seconds is on a certain computer with a certain version of your programming language. Instead, we should generalize the algorithm's complexity.
+
+
+We do so using a notation that mathematicians and computer scientists use, called Big-O notation. This notation standardizes how we discuss the efficiency of algorithms. Most of the time, we use Big-O notation to describe time complexity, but we can also use it to describe memory efficiency as well.
+
+Big-O notation is not an exact metric for benchmarking algorithms. Rather, it gives us an abstract idea about how costly or efficient an algorithm is, with respect to how much computing power it takes. With Big-O notation, we are comparing orders of magnitude.
+
+A few notes on Big-O notation:
+* When we calculate the Big-O of the function, we are calculating the **worst** possible runtime for a given function.
+* Sometimes, Big-O notation is referred to as [asymptotic analysis](http://www.cs.cornell.edu/courses/cs3110/2013sp/supplemental/lectures/lec19-asymp/review.html).
+
+For time complexity, we want to count how many times the code is run in context of how large the input to the code is. Let's break this down into categories of Big-O.
+
+### O(1) Complexity (aka Constant Complexity)
+
+O(1) means that an algorithm's runtime is static or constant. The complexity stays the same no matter the input.
+
+```javascript
+function helloWorld (arr) {
+	console.log('hello world')
+}
+
+function returnFirstItem (arr) {
+	return arr[0]
+}
+```
+
+In both of the above examples, no matter what size the `arr` argument is, the function will run once.
+
+### O(N) Complexity (aka Linear Complexity)
+
+O(N) complexity means that, as the input sizes increase, the processing time increases linearly. Or, more simply, the code runs once for each input.
+
+```javascript
+function iterate (arr) {
+	arr.forEach(item => console.log(item))
+}
+
+function iterateLoop (arr) {
+	for (let i = 0; i < arr.length; i++) {
+		console.log(arr[i])
+	}
+}
+
+function addOne (arr) {
+	return arr.map(item => item + 1)
+}
+```
+
+In each of the above examples, we go through the array and perform an action with each item in it. If we have the array `[1]`, each will execute once. If we have the array `[3, 5, 1000]` the code will run 3 times. If our array has 1000 items, the code will execute 1000 times!
+
+### O(N^2) Complexity (aka Quadratic Complexity)
+
+For an input with the size n, quadratically complex algorithms execute n*n times. 
+
+```javascript
+function consoleLogLots (arr) {
+	for (let i = 0; i < arr.length; i++) {
+		for (let j = 0; j < arr.length; j++) {
+			console.log(arr[i], arr[j])
+		}
+	}
+}
+```
+For the array `[1, 3]`, this function will print:
+```js
+[1, 1]
+[1, 3]
+[3, 1]
+[3, 3]
+```
+For a 2 item array, the code executes 4 times. This scales pretty fast -- for an array with 100 items this code will `console.log` 10,000 times!
+
+### O (log n) and O(n log n) Complexity
+
+O (log n) complexity refers to algorithms with higher than 1 but less than n time complexity. We don't actually have to calculate logarithms or anything like that! One example of an O (log n) algorithm is a binary search.
+
+In a standard array, if we want to find the index of an item with a given value, we have to iterate through it and check if each item is equal to the item we are searching for. If we know that we have a **sorted** array, we can do this a lot easier! 
+
+For the array `[1, 3, 5, 7, 9, 11, 13]`, if we want to find the index of the 5, we can do so like this:
+* Find the item at the midpoint of the array. This ends up being `7`.
+* Our item is below 7, so then, since our array is sorted, we only have to search the the half of the array before the 7.
+* The midpoint of the sub array from 1-7 or `[1, 3, 5]` is `3`.
+* This time, 5 is larger than 3, so we search the sub-array `[5]`. Since the midpoint of that array `5` is equal to the number we are searching for, we just return that number.
+
+An implementation of that algorithm is below:
+```javascript
+function binarySearch(arr, item, first = 0, last = null) {
+	if (!last) last = arr.length
+
+	let midpoint = (last - first) / 2 + first
+
+	if (arr[midpoint] === item) return midpoint
+	if (arr[midpoint] > item) return binarySearch(arr, item, first, midpoint)
+	if (arr[midpoint] < item) return binarySearch(arr, item, midpoint, last)
+}
+```
+The above function ran 3 times instead of the 7 that we would need if we iterated through the entire array! This algorithm is super efficient -- even if we have a million items in our array, on average we will only need to execute the binary search 20 times.
+
+O(n log n) algorithms are ones that are faster than O (n^2) but slower than O(n). Let's come back to O(n log n) in a minute -- a lot of sorting algorithms fall under this category.
+
+### O(n!) and O(n^n)
+
+O(n!) and O(n^n) complexities should make you very nervous! These should be avoided at all costs. One example of an O(n!) algorithm is the Bogosort - aka the slowsort. This sort is when an array is randomly ordered over and over again until it is in the correctly sorted order. For an array with the length 10, this sort may have to run up to 3628800 times! Sometimes you will have to look at all the available combinations and writing code that are in these complexity categories can't be avoided, but they should bring up some red flags!
+
+### Drop the Coefficients
+
+Again, having an efficient algorithm is much more important when we have large inputs. By convention, we drop the coefficients during Big-O analysis since they are usually negligible for those inputs.
+
+For example:
+```javascript
+function iter (arr) {
+	// Big-O: N
+	arr.forEach(item => console.log(item))
+	arr.forEach(item => console.log(item))
+} 
+
+function helloWorld () {
+	// Big-O: 1
+	console.log('hello world')
+	console.log('hello world')
+}
+```
+The above examples, at first look would have complexities of O(2N) and O(2) respectively; however, in order to keep things simple, we can drop the coefficients. The time complexities are still linear and constant respectively.
+
+### Brief Aside: Recursion
+
+Recursion is when a function calls itself. A lot of the times, this will make writing out code for our algorithm a bit easier and at times clearer. Any time you write a recursive function, though, keep in mind that it can be rewritten iteratively (or with a loop). In most cases, recursive functions are less efficient than iterative ones because we are adding a bunch of calls to the call stack. If we add too many function calls to the call stack we can have a stack overflow (this is usually around 20-40,000 calls)! Some languages do optimize [tail recursion](http://2ality.com/2015/06/tail-call-optimization.html) which essentially makes a recursive function into a while loop during interpreting or compiling.
+
+Some interviewers prefer recursive solutions whereas others are very against them -- don't worry too much about it just know the pros and cons of both approaches. 
+
+### Big-O Summary
+![](https://i.stack.imgur.com/jIGhf.png)
+
+The following table shows how algorithms with different complexities scale when given different numbers of inputs. Note: some values are rounded.
+
+|Complexity |1|10      |100  |
+|-----------|-|--------|-----|
+|O(1)       |1| 1      |1    |
+|O(log N)   |0| 2      |5    |
+|O(N)       |1|10      |100                            |
+|O(N log N) |0|20      |461                            |
+|O(N^2)     |1|100     |10000                          | 
+|O(2^N)     |1|1024    |1267650600228229401496703205376|       
+|O(N!)      |1|3628800 |doesn't fit on screen! |
+
+
+**How would we plot these families on the earlier graph?**
+
+Let's look at this demo in javascript...
+- Code: [JS](script.js), [HTML](index.html)
+- [Deployed](http://aboard-thought.surge.sh)
+
+### You Do: Study Big-O Families
+
+[Write down the complexities of these functions](https://gist.github.com/amaseda/c4283f5c58b9b68be9318259098f0298). 
+
 
 ## Sorting Algorithms
 
-One of the best examples of where we can use more efficient algorithms than the "brute force" or most obvious solution is when we sort arrays. 
+One of the most common subsets of algorithms are sorting algorithms. A lot of the time, we will have a collection of items that we want to order in some way for our analyses or for display purposes. 
+![](https://cdn-images-1.medium.com/max/600/1*i0fopl3fml48X4aAxpqM4A.jpeg)
 
-The immediate thought is probably to find the smallest item in the array and move it down the array in order. That brute force solution is called an insertion sort. It's pretty inefficient -- we will have to traverse the array a bunch of times to always find the minimum. 
+There are **tons** of sorting algorithms with various pros and cons to them -- some are more efficient with some types of inputs and less with others. Again, having an efficient sorting algorithm isn't super important with a collection of ten items, but when there are a million or a billion efficiency becomes very important!
+
+With different sorting algorithms, there are a couple things we need to keep in mind. The first is the time complexity - which we just went over. The second is whether or not they are **in place**. Some sorting algorithms can just re-order the collection, others need an additional data structure in order to work. 
 
 ### Bubble Sort
 
-The bubble sort algorithm goes like this: pass through the array a bunch of times, and each time if one element is higher than its neighbor, swap them. [Here](https://www.toptal.com/developers/sorting-algorithms/) is a visualisation of that.
+The bubble sort algorithm goes like this: pass through the array a bunch of times, and each time if one element is higher than its neighbor, swap them. [Here](https://www.toptal.com/developers/sorting-algorithms/) is a visualization of it.
 
 ```javascript
 Array.prototype.swap = function (idxA, idxB) {
@@ -93,7 +260,7 @@ function bubbleSort (a) {
 }
 ```
 
-This is probably one of the more obvious ways to sort an array -- we are just passing through it and swapping elements. This doesn't really scale well -- think about how many times you would have to pass through a really unsorted array!
+The bubble sort algorithm has an O(n^2) complexity. It works really well if an array is close to sorted -- in that case the algorithm could be closer to O (n log n), but in the case that an array is not close to sorted, it will be a lot less efficient.
 
 
 ## Quicksort
@@ -119,31 +286,22 @@ function quickSort (a) {
 	return quickSort(above).concat([pivotValue], quickSort(below))
 } 
 ```
-Quick sort is a more efficient algorithm for sorting an array. But why is that?
 
-> Aside: writing sorting algorithms is important for understanding the "behind the scenes" of a programming language, but each one we have used in this class has a `.sort()` method built in. Ruby's uses a [merge sort](https://en.wikipedia.org/wiki/Merge_sort), Python uses a [tim sort](https://en.wikipedia.org/wiki/Timsort), and JavaScript uses [quick sort](https://stackoverflow.com/questions/234683/javascript-array-sort-implementation) -- but this depends on the browser. In practice, you should use these since they are highly optimized, though many companies like you to know some sorting algorithms (usually have two on hand). 
+## You Do: Researching Common Sorting Algorithms
 
+In groups of two, research the following sorting algorithms:
+* Selection sort
+* Merge sort
+* Radix sort
+* Counting sort
 
-## Running Time and Big-O Analysis
+You will be presenting your findings to the rest of the class! Make sure you include the benefits, drawbacks, complexity, and a code sample of your algorithm. If you want to send any materials for your presentation to me feel free to do so!
 
-We can look at a program and say -- "Oh that took two seconds to run". But that two seconds is dependent on a lot of things. That two seconds is for a very specific input. If we make the input 100 items instead of 10, what happens? Also, that two seconds is on a certain computer with a certain version of your programming language. Instead, we should generalize the algorithm's complexity.
+> Aside: writing sorting algorithms is important for understanding the "behind the scenes" of a programming language, but each language we have used in this class has a `.sort()` method built in. Ruby's uses a [merge sort](https://en.wikipedia.org/wiki/Merge_sort), Python uses a [tim sort](https://en.wikipedia.org/wiki/Timsort), and JavaScript uses [quick sort](https://stackoverflow.com/questions/234683/javascript-array-sort-implementation) -- but this depends on the browser. In practice, you should use these since they are highly optimized, though many companies like you to know some sorting algorithms (usually have two on hand). 
 
-We do so using a notation that mathematicians and computer scientists use, called Big-O notation.
-
-
-* Learn how to optimize code both in terms of memory and runtime.
-* 
-
-## Computers
-https://imgur.com/XuGhPgC
-
-### Binary
-https://i.redd.it/gk7dicv6hsvy.jpg
-https://i.redd.it/x5ehl617qofz.jpg
 
 ### Pointers
 
-#### Passing by Reference
 
 ## Big O Notation
 
@@ -314,7 +472,7 @@ Binary search trees are a special form of where each left child of a node has a 
 https://i.redd.it/f4pua0fm4ysy.gif
 
 #### Divide and Conquer
-Divide and conquer is "an algorithm design paradigm that is based on multi-branch recursion. It takes a larger problem and breaks it into 2+ sub-problems" ([Wikipedia](https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm)). [Merge soring](https://github.com/aspittel/coding_cheat_sheets/blob/master/sorting/mergesort.md) and some fibonacci algorithms are implementations of the divide and conquer algorithm. These are especially useful on multi-processor systems.
+Divide and conquer is "an algorithm design paradigm that is based on multi-branch recursion. It takes a larger problem and breaks it into 2+ sub-problems" ([Wikipedia](https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm)). [Merge soring](https://github.com/aspittel/coding_cheat_sheets/blob/master/sorting/mergesort.md) and some Fibonacci algorithms are implementations of the divide and conquer algorithm. These are especially useful on multi-processor systems.
 
 ##### Code Example
 ```ruby
@@ -332,3 +490,5 @@ end
 Additional resources: 
 
 * https://www.youtube.com/watch?v=JPyuH4qXLZ0
+* http://bigocheatsheet.com/
+> If you like graphs, check out this [running time graph](http://science.slc.edu/~jmarshall/courses/2002/spring/cs50/BigO/).
