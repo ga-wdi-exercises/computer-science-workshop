@@ -1,8 +1,10 @@
 # Computer Science Fundamentals
 
 ## Learning Objectives
-* Define what an algorithm is
+* Define computer science and discuss how it is useful for web developers.
+* Define the word `algorithm`.
 * Use asymptotic analysis to analyze the complexity of different algorithms.
+* Implement multiple sorting algorithms.
 * Understand basic data structures and why they are useful.
 
 ## Framing
@@ -29,6 +31,12 @@ What do you already know about computer science?
 Decades ago, it was absolutely necessary to have an understanding of computer science to do anything with a computer. In the beginning of consumer computing, home computers were essentially electronics projects for enthusiasts and hardcore hobbyists. The types of things you could do with a computer were very limited, and of interest to people with specific interests. Computers have come a long way since then, and are equipped with operating systems that attempt to make it as easy as possible for anyone to use a computer.
 
 Something similar is true for programming, namely that not knowing any computer science is no longer a barrier to entry.
+
+You probably know more computer science than you even realize! 
+> **110F,S Introduction to Computer Science.** 
+The first course in computer science is an introduction to algorithmic problem-solving using the Python programming language. Topics include primitive data types, mathematical operations, structured programming with conditional and iterative idioms, functional abstraction, objects, classes and aggregate data types. Students apply these skills in writing programs to solve problems in a variety of application areas. No previous programming experience necessary. (Quantitative and Symbolic Reasoning.) Maximum enrollment, 26. The Department. [Hamilton College Intro to Computer Science](https://www.hamilton.edu/academics/departments/Courses-and-Requirements?dept=Computer%20Science).
+
+Today we are going to go through an abbreviated version of a "Data Structures and Algorithms" course since that is usually one of the most important classes computer science students take.
 
 ### How Can We Use Computer Science?
 
@@ -63,14 +71,13 @@ In other words...
 
 When we work with relatively small inputs, like we have for the most part in this class, using an efficient algorithm to solve a problem is not crucial. Instead, it is more important to have clean code, good interfaces, and bug-less applications. However, once we are working with huge inputs our code will get a lot slower. At that point, building efficient algorithms becomes really important.
 
-When we write code, one of our main goals is to make that code execute quickly. If our code is inefficient, our sites will load slowly and users may leave. We also want to use as little memory as possible when we execute our code so that it is less expensive to host our sites.
+When we write code, one of our main goals is to make that code execute quickly. If our code is inefficient, our sites will load slowly and users may leave. We also want to use as little memory as possible when we execute our code so that it is less expensive to host our sites. These are usually the two best measures of the effectiveness of an algorithm, their speed and their memory use.
 
 ## Run Time and Big-O Analysis
 
-We can look at a program and say -- "Oh that took two seconds to run". But that two seconds is dependent on a lot of things. That two seconds is for a very specific input. If we make the input 100 items instead of 10, what happens? Also, that two seconds is on a certain computer with a certain version of your programming language. Instead, we should generalize the algorithm's complexity.
+We can look at a program and say -- "Oh that took two seconds to run". But that two seconds is dependent on a lot of factor. That two seconds is for a very specific input. If we make the input 100 items instead of 10, what happens? Also, that two seconds is on a certain computer with a certain version of your programming language. Instead, we should generalize the algorithm's complexity.
 
-
-We do so using a notation that mathematicians and computer scientists use, called Big-O notation. This notation standardizes how we discuss the efficiency of algorithms. Most of the time, we use Big-O notation to describe time complexity, but we can also use it to describe memory efficiency as well.
+We do so using a notation that mathematicians and computer scientists use, called Big-O notation. This notation standardizes how we discuss the efficiency of algorithms. Most of the time, we use Big-O notation to describe time complexity, but we can also use it to describe memory efficiency.
 
 Big-O notation is not an exact metric for benchmarking algorithms. Rather, it gives us an abstract idea about how costly or efficient an algorithm is, with respect to how much computing power it takes. With Big-O notation, we are comparing orders of magnitude.
 
@@ -78,7 +85,7 @@ A few notes on Big-O notation:
 * When we calculate the Big-O of the function, we are calculating the **worst** possible runtime for a given function.
 * Sometimes, Big-O notation is referred to as [asymptotic analysis](http://www.cs.cornell.edu/courses/cs3110/2013sp/supplemental/lectures/lec19-asymp/review.html).
 
-For time complexity, we want to count how many times the code is run in context of how large the input to the code is. Let's break this down into categories of Big-O.
+For time complexity, we want to count how many times the code is run in context of how large the input to the code is. For example, O(1) is a very efficient piece of code, O(N!) is very inefficient. Let's break this down into categories of Big-O.
 
 ### O(1) Complexity (aka Constant Complexity)
 
@@ -142,9 +149,9 @@ For a 2 item array, the code executes 4 times. This scales pretty fast -- for an
 
 ### O (log n) and O(n log n) Complexity
 
-O (log n) complexity refers to algorithms with higher than 1 but less than n time complexity. We don't actually have to calculate logarithms or anything like that! One example of an O (log n) algorithm is a binary search.
+O (log n) complexity refers to algorithms with significantly lower than n complexity. We don't actually have to calculate logarithms or anything like that! Technically, a logarithm is a "quantity representing the power to which a fixed number (the base) must be raised to produce a given number." So, the base 10 logarithm of 1000 is 3 since 10^3 is 1000 source](https://en.wikipedia.org/wiki/Logarithm). O (log n) complex algorithms 
 
-In a standard array, if we want to find the index of an item with a given value, we have to iterate through it and check if each item is equal to the item we are searching for. If we know that we have a **sorted** array, we can do this a lot easier! 
+One example of an O (log n) algorithm is a binary search. In a standard array, if we want to find the index of an item with a given value, we have to iterate through it and check if each item is equal to the item we are searching for. If we know that we have a **sorted** array, we can do this a lot easier! 
 
 For the array `[1, 3, 5, 7, 9, 11, 13]`, if we want to find the index of the 5, we can do so like this:
 * Find the item at the midpoint of the array. This ends up being `7`.
@@ -164,17 +171,18 @@ function binarySearch(arr, item, first = 0, last = null) {
 	if (arr[midpoint] < item) return binarySearch(arr, item, midpoint, last)
 }
 ```
+
 The above function ran 3 times instead of the 7 that we would need if we iterated through the entire array! This algorithm is super efficient -- even if we have a million items in our array, on average we will only need to execute the binary search 20 times.
 
 O(n log n) algorithms are ones that are faster than O (n^2) but slower than O(n). Let's come back to O(n log n) in a minute -- a lot of sorting algorithms fall under this category.
 
 ### O(n!) and O(n^n)
 
-O(n!) and O(n^n) complexities should make you very nervous! These should be avoided at all costs. One example of an O(n!) algorithm is the Bogosort - aka the slowsort. This sort is when an array is randomly ordered over and over again until it is in the correctly sorted order. For an array with the length 10, this sort may have to run up to 3628800 times! Sometimes you will have to look at all the available combinations and writing code that are in these complexity categories can't be avoided, but they should bring up some red flags!
+O(n!) and O(n^n) complexities should make you very nervous! These should be avoided at all costs. One example of an O(n!) algorithm is the Bogosort - aka the slowsort. This sort is when an array is randomly ordered over and over again until it is in the correctly sorted order. For an array with the length 10, this sort may have to run up to 3,628,800 times! Sometimes you will have to look at all the available combinations and writing code that are in these complexity categories can't be avoided, but they should bring up some red flags!
 
-### Drop the Coefficients
+### Drop the Coefficients and Constants
 
-Again, having an efficient algorithm is much more important when we have large inputs. By convention, we drop the coefficients during Big-O analysis since they are usually negligible for those inputs.
+Again, having an efficient algorithm is much more important when we have large inputs. By convention, we drop the coefficients and constants during Big-O analysis since they are usually negligible for those inputs.
 
 For example:
 ```javascript
@@ -182,6 +190,7 @@ function iter (arr) {
 	// Big-O: N
 	arr.forEach(item => console.log(item))
 	arr.forEach(item => console.log(item))
+	console.log('hello world')
 } 
 
 function helloWorld () {
@@ -190,15 +199,7 @@ function helloWorld () {
 	console.log('hello world')
 }
 ```
-The above examples, at first look would have complexities of O(2N) and O(2) respectively; however, in order to keep things simple, we can drop the coefficients. The time complexities are still linear and constant respectively.
-
-### Brief Aside: Recursion
-
-Recursion is when a function calls itself. A lot of the times, this will make writing out code for our algorithm a bit easier and at times clearer. Any time you write a recursive function, though, keep in mind that it can be rewritten iteratively (or with a loop). In most cases, recursive functions are less efficient than iterative ones because we are adding a bunch of calls to the call stack. If we add too many function calls to the call stack we can have a stack overflow (this is usually around 20-40,000 calls)! Some languages do optimize [tail recursion](http://2ality.com/2015/06/tail-call-optimization.html) which essentially makes a recursive function into a while loop during interpreting or compiling.
-
-Some interviewers prefer recursive solutions whereas others are very against them -- don't worry too much about it just know the pros and cons of both approaches. 
-
-> Easter Egg: search recursion on Google!
+The above examples, at first look would have complexities of O(2N + 1) and O(2) respectively; however, in order to keep things simple, we can drop the coefficients. The time complexities are still linear and constant respectively. We take the least efficient operation within the block of code to measure its efficiency.
 
 ### Big-O Summary
 ![](https://i.stack.imgur.com/jIGhf.png)
@@ -216,8 +217,6 @@ The following table shows how algorithms with different complexities scale when 
 |O(N!)      |1|3628800 |doesn't fit on screen! |
 
 
-**How would we plot these families on the earlier graph?**
-
 Let's look at this demo in javascript...
 - Code: [JS](https://git.generalassemb.ly/ga-wdi-lessons/cs-algorithms/blob/master/js-example/script.js), [HTML](https://git.generalassemb.ly/ga-wdi-lessons/cs-algorithms/blob/master/js-example/index.html)
 - [Deployed](http://aboard-thought.surge.sh)
@@ -226,6 +225,13 @@ Let's look at this demo in javascript...
 
 [Write down the complexities of these functions](https://gist.github.com/amaseda/c4283f5c58b9b68be9318259098f0298). 
 
+### Brief Aside: Recursion
+
+Recursion is when a function calls itself. A lot of the times, this will make writing out code for our algorithm a bit easier and at times clearer. Any time you write a recursive function, though, keep in mind that it can be rewritten iteratively (or with a loop). In most cases, recursive functions are less efficient than iterative ones because we are adding a bunch of calls to the call stack. If we add too many function calls to the call stack we can have a stack overflow (this is usually around 20-40,000 calls)! Some languages do optimize [tail recursion](http://2ality.com/2015/06/tail-call-optimization.html) which essentially makes a recursive function into a while loop during interpreting or compiling.
+
+Some interviewers prefer recursive solutions whereas others are very against them -- don't worry too much about it just know the pros and cons of both approaches. 
+
+> Easter Egg: search recursion on Google!
 
 ## Sorting Algorithms
 
@@ -290,7 +296,7 @@ function quickSort (a) {
 
 ## You Do: Researching Common Sorting Algorithms
 
-In groups of two, research the following sorting algorithms:
+In groups of three, research the following sorting algorithms:
 * Selection sort
 * Merge sort
 * Radix sort
@@ -300,7 +306,7 @@ You will be presenting your findings to the rest of the class! Make sure you inc
 
 > Aside: writing sorting algorithms is important for understanding the "behind the scenes" of a programming language, but each language we have used in this class has a `.sort()` method built in. Ruby's uses a [merge sort](https://en.wikipedia.org/wiki/Merge_sort), Python uses a [tim sort](https://en.wikipedia.org/wiki/Timsort), and JavaScript uses [quick sort](https://stackoverflow.com/questions/234683/javascript-array-sort-implementation) (depending on the browser). In practice, you should ususally use these since they are highly optimized. Many companies like you to know some sorting algorithms (usually have two on hand). 
 
-# Data Structures
+## Data Structures
 
 Throughout this class, we've used some of the builtin data structures that our programming languages give us. Let's review what a data structure is: data structures define how a collection of data should be organized. We have used arrays, objects, hashes, and ranges in our code.  There are reasons why we choose one over the other -- if we want ordered data we use an array, if we want key value pairs we use an object. There are also other data structures out there. Some are built in to the programming language, some are not. 
 
@@ -569,60 +575,49 @@ class Queue {
 Create a queue using an array. Make sure you have the methods enqueue, dequeue, and peek!
 
 ### Graphs
-Graphs are non-linear data structures that do not necessarily follow a numerical order. Graphs are similar to trees but with essentially no rules. A tree is a graph, but most graphs are not trees. 
+In computer science, graphs are collections of **vertices** or **nodes**, which usually store or represent some data, and **edges**, which connect the nodes. Each edge connects two nodes together.  If you think of nodes as airports, edges would be the flight paths between them.  Here are some use cases for graphs:
 
+* graph databases
+* relationships among users in a social network
+* links between pages on a website
+* finding a route between two locations
+* planning the order of classes to take based on prerequisites
+
+![](http://www.boost.org/doc/libs/1_41_0/libs/graph_parallel/doc/graph.png)
+
+The node holds the data and then the edges point to related nodes. There are two types of edges: directed and undirected. Directed edges point in a direction whereas undirected edges point both ways. 
+
+There are many ways to store a graph data structure. You can use pointers and nodes, or you could use an adjacency list or matrix.
+
+Creating a graph is very simple and we can do so in many ways. For example:
+```javascript
+class Node {
+	constructor (data) {
+		this.data = data
+		this.edges = []
+	}
+}
 ```
-     A –→ B ←–––– C → D ↔ E
-     ↑    ↕     ↙ ↑     ↘
-     F –→ G → H ← I ––––→ J
-           ↓     ↘ ↑
-           K       L
-```
-Image from [itsy-bitsy-data-structures](https://github.com/thejameskyle/itsy-bitsy-data-structures/blob/master/itsy-bitsy-data-structures.js).
-
-Graphs have nodes (also called vertices) and edges. The node holds the data and then the edges point to related nodes. There are two types of edges: directed and undirected. Directed edges point in a direction whereas undirected edges point both ways. 
-
-* Good examples of graphs are Facebook friends, Twitter following (which would be directed), or a map of Metro stops.
-
-* There are many ways to store a graph data structure. You can use pointers and nodes, or you could use an adjacency list or matrix.
-
-* A degree is how many edges a given vertex has. 
-
-* An Euler path visits each edge just once. A graph must have either zero or two vertices with an odd degree to have an euler path. 
-
-* A cycle is a circle mad of edges.
-
-* Both edges and nodes can be weighted.
-* The top node in a tree is called the root.
-
-Visual representation of a tree
-```
-          A                     
-        ↙   ↘              
-      B       C                
-    ↙  ↘
-   D    E
-```
-
-### Heaps
-
-Heaps are inverted tree-like data structures. They are a set of interconnected nodes that store data in a particular order. The function that determines ordering is called the heap property. Each child node must have a parent with a higher priority according to that heap property. 
-
-|Operation|Complexity|
-|---------|----------|
-|Access   |N/A       |
-|Search   |O(n)      |
-|Insert   |O(1)      |
-|Delete   |O(log(n)) | 
+Usually the most important action we can take with graphs is traversing their relationships. Breadth first and depth first searching
 
 ### Trees
 
-Trees are graph data structures that are hierarchical and unidirectional. That means that certain nodes that are above others in the tree. Nodes at the same level cannot point to one another. 
+Trees are graph data structures that are hierarchical and unidirectional. They have a root value, and then sub-trees of children that each have parents. They are represented as a series of linked nodes. Each node has a value and then pointers to its children.
 
+The most common tree is a binary tree -- each node has at most two children.
 
-#### Binary Search Trees
+```javascript
+class BinaryTree {
+	constructor (data, left = null, right = null) {
+		this.data = data
+		this.left = left
+		this.right = right
+	}
+}
+```
 
-Binary search trees are a special form of where each left child of a node has a lower value than its parent and each right child has a greater value than its parent. There cannot be any duplicate values in the tree. These are very efficient for searching. 
+![](http://collegelabs.co/clabs/nld/images/tree%20(1).gif)
+
 
 |Operation|Complexity|
 |---------|----------|
@@ -631,15 +626,90 @@ Binary search trees are a special form of where each left child of a node has a 
 |Insert   |O(log n)  |
 |Delete   |O(log n)  | 
 
-## Algorithms
+Here are a few examples of trees in computing:
 
-### Sorting
+* **the DOM tree**
+* The file system, where directories contain other directories and/or files. The `/` directory is called the "root" directory because it's the root of the computer's directory tree. Use the command `tree` to view the tree structure of any given directory. (You may need to install this capability with `brew install tree`)
+* comment trees (where users can comment on comments)
+* data compression algorithm trees (Huffman coding)
+* single-elimination tournaments
+* parser trees or syntax trees that help a computer interpret human-readable code
+* the way calculators compute order of operations * indexes in databases usually utilize trees.
 
-### Searching
+Usually, trees are extended so that they have more features than just two branches. Some common trees include AVL trees, red-black trees, splay trees, tries, Radix trees, ternary search trees, B trees, and B+ trees. Potentially the most used ones, though, are binary search trees.
+
+#### Binary Search Trees
+
+Binary search trees or BSTs are special types of trees that add extra restrictions to them.
+In each node's left child subtree (if it has one), all nodes will will have keys less than the original node's key. In each node's right child subtree (if it has one), all nodes must have a greater key than the original node itself (or equal). Left is less!
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Binary_search_tree.svg/1200px-Binary_search_tree.svg.png)
+
+```javascript
+class Node {
+	constructor (value, right = null, left = null) {
+		this.value = value
+		this.right = right
+		this.left = left
+	}
+}
 
 
-Additional resources: 
+class BST {
+	constructor () {
+		this.root = null
+	}
 
-* https://www.youtube.com/watch?v=JPyuH4qXLZ0
+	insert (value) {
+		let node = new Node(value)
+
+		if (!this.root) {
+			this.root = node
+		} else {
+			let currentNode = this.root
+
+			while (currentNode) {
+				if (currentNode.value > value) {
+					if (currentNode.left) {
+						currentNode = currentNode.left
+					} else {
+						currentNode.left = node
+						return
+					}
+				} else {
+					if (currentNode.right) {
+						currentNode = currentNode.right
+					} else {
+						currentNode.right = node
+						return
+					}
+				}
+			}
+		}
+	}
+}
+```
+#### You Do: Add getMinimum method to BST
+Add a method that retrieves the minimum value in a Binary Search Tree.
+
+## Additional resources: 
+
+#### Big-O Notation
+* https://www.youtube.com/watch?v=V6mKVRU1evU
+* http://www.cs.cmu.edu/afs/cs/academic/class/15451-s10/www/lectures/lect0203.pdf
+
+#### Algorithms
 * http://bigocheatsheet.com/
-> If you like graphs, check out this [running time graph](http://science.slc.edu/~jmarshall/courses/2002/spring/cs50/BigO/).
+* http://www.cs.usfca.edu/~galles/visualization/Algorithms.html
+* https://github.com/WDI-SEA/python-binary-search/blob/master/binarysearch.py
+* https://github.com/WDI-SEA/python-recursion
+* https://discuss.codechef.com/questions/48877/data-structures-and-algorithms
+* https://www.youtube.com/user/algorithmscourses
+* https://github.com/keon/algorithms
+
+#### Computer Science
+* https://medium.com/basecs/
+* https://aspittel.github.io/coding-cheat-sheets/
+* http://science.slc.edu/~jmarshall/courses/2002/spring/cs50/BigO/
+* https://www.youtube.com/watch?v=JPyuH4qXLZ0
+* https://www.khanacademy.org/computing/computer-science/algorithms#intro-to-algorithms
