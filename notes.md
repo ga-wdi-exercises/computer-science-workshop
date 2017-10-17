@@ -248,7 +248,7 @@ class SinglyLinkedList {
 	}
 
 	insert (item) {
-		this.head = new Node(item)
+		this.head = new Node(item, this.head)
 		this.length ++
 	}
 
@@ -267,8 +267,10 @@ class SinglyLinkedList {
 }
 ```
 
-#### You Do: Implement Delete and Access
-* Add methods to the `SinglyLinkedList` that allow you to delete a node and that allow you to access an item at a certain index.
+#### You Do: Implement Access and Iterate
+Add methods to the `SinglyLinkedList` that allow you to:
+	* `console.log()` all of the items in the linked list 
+	* allow you to access an item at a certain index.
 
 ```javascript
 class Node {
@@ -288,22 +290,22 @@ class DoublyLinkedList {
 	}
 
 	insert (item) {
-		new_node = new Node(item, null, self.head)
+		new_node = new Node(item, null, this.head)
 		
-		if (!self.head) {
-			self.head = new_node
+		if (!this.head) {
+			this.head = new_node
 		} else {
-			self.tail.next = new_node
-			new_node.prev = self.tail
+			this.tail.next = new_node
+			new_node.prev = this.tail
 		}
 
-		self.tail = new_node
+		this.tail = new_node
 		this.length ++
 	}
 
 	search (item) {
 		let idx = 0
-		let node = self.head
+		let node = this.head
 
 		while (node) {
 			if (node.data == data) return idx
@@ -316,7 +318,7 @@ class DoublyLinkedList {
 }
 ```
 
-#### You Do: Implement Delete and Access
+#### You Do: Implement Backward Traverse
 * Add methods to the `DoublyLinkedList` that allow you to traverse the doubly linked list backwards.
 
 ## CFU
