@@ -408,8 +408,10 @@ class SinglyLinkedList {
 }
 ```
 
-#### You Do: Implement Delete and Access
-* Add methods to the `SinglyLinkedList` that allow you to delete a node and that allow you to access an item at a certain index.
+#### You Do: Implement Access and Iterate
+Add methods to the `SinglyLinkedList` that allow you to:
+	* `console.log()` all of the items in the linked list 
+	* allow you to access an item at a certain index.
 
 ```javascript
 class Node {
@@ -457,7 +459,7 @@ class DoublyLinkedList {
 }
 ```
 
-#### You Do: Implement Delete and Access
+#### You Do: Implement Backward Traverse
 * Add methods to the `DoublyLinkedList` that allow you to traverse the doubly linked list backwards.
 
 
