@@ -697,6 +697,7 @@ Add a method that retrieves the minimum value in a Binary Search Tree.
 #### Big-O Notation
 * https://www.youtube.com/watch?v=V6mKVRU1evU
 * http://www.cs.cmu.edu/afs/cs/academic/class/15451-s10/www/lectures/lect0203.pdf
+* https://stackoverflow.com/questions/487258/what-is-a-plain-english-explanation-of-big-o-notation/487278
 
 #### Algorithms
 * http://bigocheatsheet.com/
