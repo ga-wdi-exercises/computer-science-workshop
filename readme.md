@@ -149,7 +149,7 @@ For a 2 item array, the code executes 4 times. This scales pretty fast -- for an
 
 ### O (log n) and O(n log n) Complexity
 
-O (log n) complexity refers to algorithms with significantly lower than n complexity. We don't actually have to calculate logarithms or anything like that! Technically, a logarithm is a "quantity representing the power to which a fixed number (the base) must be raised to produce a given number." So, the base 10 logarithm of 1000 is 3 since 10^3 is 1000 source](https://en.wikipedia.org/wiki/Logarithm). O (log n) complex algorithms 
+O (log n) complexity refers to algorithms with significantly lower than n complexity. We don't actually have to calculate logarithms or anything like that! Technically, a logarithm is a "quantity representing the power to which a fixed number (the base) must be raised to produce a given number." So, the base 10 logarithm of 1000 is 3 since 10^3 is 1000 [source](https://en.wikipedia.org/wiki/Logarithm). O (log n) complex algorithms can have any base.
 
 One example of an O (log n) algorithm is a binary search. In a standard array, if we want to find the index of an item with a given value, we have to iterate through it and check if each item is equal to the item we are searching for. If we know that we have a **sorted** array, we can do this a lot easier! 
 
